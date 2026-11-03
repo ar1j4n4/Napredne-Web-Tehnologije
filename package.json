@@ -10,7 +10,13 @@
     "dev": "dotenv -e .env -- concurrently -n client,server \"npm run dev -w client\" \"npm run dev -w server\"",
     "build": "npm run build -w client && npm run build -w server",
     "typecheck": "npm run typecheck -w client && npm run typecheck -w server",
-    "start": "npm run start -w server"
+    "start": "npm run start -w server",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "prisma:generate": "dotenv -e .env -- npm run prisma:generate -w server",
+    "prisma:migrate": "dotenv -e .env -- npm run prisma:migrate -w server",
+    "prisma:deploy": "dotenv -e .env -- npm run prisma:deploy -w server",
+    "prisma:seed": "dotenv -e .env -- npm run prisma:seed -w server"
   },
   "devDependencies": {
     "concurrently": "9.1.2",

@@ -1,5 +1,20 @@
-# MealSync
+# MealSync — Faza 1 (radni milestone)
 
-Projekt iz kolegija Napredne web tehnologije — Grupa 3.
+Ovaj repozitorij trenutno ima osnovni React/Vite frontend, Node/Express backend i root npm workspace. Sljedeći PR-ovi Faze 1 dodaju PostgreSQL/Prisma sloj, dnevni jelovnik, UI povezivanje i integracijske testove.
 
-Trenutno je u tijeku Faza 1. Backend bootstrap je postavljen, a frontend, baza podataka i prvi vertikalni MealSync tok dodaju se kroz sljedeće Phase-1 Pull Requestove.
+## Trenutno dostupno
+
+- React/Vite bootstrap u `client/`;
+- Express API bootstrap u `server/`;
+- `GET /api/health`;
+- root workspace skripte za `dev`, `typecheck` i `build`.
+
+## Lokalni početak
+
+1. Instaliraj Node.js 22+ i npm 10+.
+2. Kopiraj `.env.example` u `.env`.
+3. Pokreni `npm install`.
+4. Pokreni `npm run typecheck` i `npm run build`.
+5. Pokreni `npm run dev`.
+
+Ovaj README je namjerno ograničen na stanje nakon root-workspace PR-a; završni Phase-1 README bit će dopunjen nakon integracije baze, menu flowa i testova.

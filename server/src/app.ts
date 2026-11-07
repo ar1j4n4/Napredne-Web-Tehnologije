@@ -3,6 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import { env } from "./config/env.js";
 import { errorHandler, notFound } from "./lib/errors.js";
+import menuRoutes from "./routes/menu.routes.js";
 
 export function createApp() {
   const app = express();
@@ -14,6 +15,7 @@ export function createApp() {
   app.get("/api/health", (_req, res) => {
     res.json({ ok: true, service: "mealsync-api" });
   });
+  app.use("/api/menu", menuRoutes);
 
   app.use(notFound);
   app.use(errorHandler);

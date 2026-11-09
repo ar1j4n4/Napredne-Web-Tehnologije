@@ -16,7 +16,8 @@
     "prisma:generate": "dotenv -e .env -- npm run prisma:generate -w server",
     "prisma:migrate": "dotenv -e .env -- npm run prisma:migrate -w server",
     "prisma:deploy": "dotenv -e .env -- npm run prisma:deploy -w server",
-    "prisma:seed": "dotenv -e .env -- npm run prisma:seed -w server"
+    "prisma:seed": "dotenv -e .env -- npm run prisma:seed -w server",
+    "test": "dotenv -e .env -- npm run test:integration -w server"
   },
   "devDependencies": {
     "concurrently": "9.1.2",

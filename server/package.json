@@ -11,7 +11,10 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
-    "prisma:seed": "tsx prisma/seed.ts"
+    "prisma:seed": "tsx prisma/seed.ts",
+    "test": "tsx scripts/run-integration.ts",
+    "test:integration": "tsx scripts/run-integration.ts",
+    "test:integration:vitest": "vitest run tests/menu.integration.test.ts --maxWorkers=1 --minWorkers=1"
   },
   "dependencies": {
     "cors": "2.8.5",
@@ -26,7 +29,10 @@
     "@types/node": "22.14.0",
     "tsx": "4.19.3",
     "typescript": "5.8.2",
-    "prisma": "6.7.0"
+    "prisma": "6.7.0",
+    "@types/supertest": "6.0.2",
+    "supertest": "7.1.0",
+    "vitest": "3.1.1"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

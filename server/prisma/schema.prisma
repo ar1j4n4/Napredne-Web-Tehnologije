@@ -1,22 +1,97 @@
-generator client {
-  provider = "prisma-client-js"
-}
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+enum Role { CUSTOMER KITCHEN MANAGER }
+enum OrderStatus { CONFIRMED PREPARING READY PICKED_UP }
+
+model User {
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  passwordHash String
+  role Role @default(CUSTOMER)
+  orders Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Meal {
-  id                String   @id @default(cuid())
-  name              String
-  description       String
-  menuDate          DateTime @db.Date
+  id String @id @default(cuid())
+  name String
+  description String
+  menuDate DateTime @db.Date
   availablePortions Int
-  active            Boolean  @default(true)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
+  active Boolean @default(true)
+  ingredients MealIngredient[]
+  allergens MealAllergen[]
+  orderItems OrderItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@index([menuDate, active])
   @@index([name])
+}
+model Ingredient {
+  id String @id @default(cuid())
+  name String @unique
+  meals MealIngredient[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Allergen {
+  id String @id @default(cuid())
+  name String @unique
+  meals MealAllergen[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model MealIngredient {
+  mealId String
+  ingredientId String
+  meal Meal @relation(fields:[mealId], references:[id], onDelete:Cascade)
+  ingredient Ingredient @relation(fields:[ingredientId], references:[id], onDelete:Cascade)
+  @@id([mealId, ingredientId])
+}
+model MealAllergen {
+  mealId String
+  allergenId String
+  meal Meal @relation(fields:[mealId], references:[id], onDelete:Cascade)
+  allergen Allergen @relation(fields:[allergenId], references:[id], onDelete:Cascade)
+  @@id([mealId, allergenId])
+}
+model PickupSlot {
+  id String @id @default(cuid())
+  startAt DateTime
+  endAt DateTime
+  capacity Int
+  reservedOrders Int @default(0)
+  maxOrderSize Int @default(5)
+  open Boolean @default(true)
+  orders Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([startAt, open])
+}
+model Order {
+  id String @id @default(cuid())
+  userId String
+  pickupSlotId String
+  status OrderStatus @default(CONFIRMED)
+  totalQuantity Int
+  user User @relation(fields:[userId], references:[id], onDelete:Restrict)
+  pickupSlot PickupSlot @relation(fields:[pickupSlotId], references:[id], onDelete:Restrict)
+  items OrderItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+model OrderItem {
+  id String @id @default(cuid())
+  orderId String
+  mealId String
+  quantity Int
+  mealNameSnapshot String
+  order Order @relation(fields:[orderId], references:[id], onDelete:Cascade)
+  meal Meal @relation(fields:[mealId], references:[id], onDelete:Restrict)
+  @@index([orderId])
 }
